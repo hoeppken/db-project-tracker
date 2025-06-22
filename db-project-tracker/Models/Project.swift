@@ -17,7 +17,7 @@ class Project {
     var startDate = Date()
     var focus = ""
     @Relationship(deleteRule: .cascade, inverse: \ProjectUpdate.project)
-    var update : [ProjectUpdate] = [ProjectUpdate]()
+    var updates : [ProjectUpdate] = [ProjectUpdate]()
     
     init() {
         id = UUID().uuidString
