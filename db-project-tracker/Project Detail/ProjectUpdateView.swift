@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ProjectUpdateView: View {
+    
+    var update : ProjectUpdate
+    
     var body: some View {
         ZStack {
             Rectangle()
@@ -16,14 +19,14 @@ struct ProjectUpdateView: View {
             
             VStack (alignment:.leading, spacing: 10){
                 HStack {
-                    Text("Thursday, September 12, 2025").padding(.leading)
+                    Text(DateHelper.projectUpdateDate(inputDate: update.date)).padding(.leading)
                     Spacer()
-                    Text("9 Hours").padding(.trailing)
+                    Text("\(String(Int(update.hours))) Hours").padding(.trailing)
                 }
                 .padding(.vertical ,5)
                 .background(Color("Orchid"))
-                Text("Project Headline").font(.smallHeadline).padding(.horizontal)
-                Text("That sounds like a super fun and meaningful app concept, Raphael! Before I generate the logo, could you please upload a photo of yourself (optional), just in case you’d like to be subtly represented in the logo illustration—or we can skip that and focus entirely on the visual identity.")
+                Text(update.headline).font(.smallHeadline).padding(.horizontal)
+                Text(update.summary)
                     .padding(.horizontal)
                     .padding(.bottom)
                 
@@ -36,5 +39,5 @@ struct ProjectUpdateView: View {
 }
 
 #Preview {
-    ProjectUpdateView()
+    ProjectUpdateView(update: ProjectUpdate())
 }
