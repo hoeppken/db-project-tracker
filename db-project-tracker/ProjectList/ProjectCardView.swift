@@ -27,8 +27,10 @@ struct ProjectCardView: View {
                     StatbubbleView(title: "Wins", stat: "9", startColor: Color("Maroon"), endColor: Color("Olive"))
                     Spacer()
                 }
-                Text ("my current focus is...").font(.featuredText).foregroundStyle(.gray)
-                Text ("Design the new website").font(.featuredText).foregroundStyle(.gray).bold()
+                if (project.focus.trimmingCharacters(in: .whitespacesAndNewlines) != "") {
+                    Text ("my current focus is...").font(.featuredText).foregroundStyle(.gray)
+                    Text (project.focus).font(.featuredText).foregroundStyle(.gray).bold()
+                }
             }.padding()
 
         }

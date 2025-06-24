@@ -12,6 +12,7 @@ struct ProjectDetailView: View {
     
     var project: Project
     @State private var update : ProjectUpdate?
+    @State private var showEditFocus = false
     
     var body: some View {
         
@@ -44,10 +45,25 @@ struct ProjectDetailView: View {
                     Text("My current focus is...")
                         .font(.featuredText)
                     HStack {
-                        Image(systemName: "checkmark.square")
+                        
+                        if (project.focus.trimmingCharacters(in: .whitespacesAndNewlines) != "") {
                             
-                        Text("Design the new website")
+                            Button {
+                                //Complete this milestone
+                                completeMilestone()
+                            } label: {
+                                Image(systemName: "checkmark.square")
+                            }
+
+                            
+                        }
+                            
+                        Text(project.focus.trimmingCharacters(in: .whitespacesAndNewlines) == "" ? "Tap to set your focus" : project.focus)
                             .font(.featuredText)
+                            .onTapGesture {
+                                //Display the edit focus form
+                                showEditFocus = true
+                            }
                     }
                     .padding(.leading)
                 }
@@ -119,6 +135,23 @@ struct ProjectDetailView: View {
                 AddUpdateView(project: project, update: update)
                     .presentationDetents([.fraction(0.3)])
             }
+            .sheet(isPresented: $showEditFocus) {
+                EditFocusView(project: project)
+                    .presentationDetents([.fraction(0.2)])
+            }
+    }
+    
+    func completeMilestone() {
+        //Create a new project update for milestone
+        let update = ProjectUpdate()
+        update.updateType = .milestone
+        update.headline = "Milestone achieved!"
+        update.summary = project.focus
+        project.updates.append(update)
+        
+        //Clear the project focus
+        project.focus = ""
+        
     }
 }
 
