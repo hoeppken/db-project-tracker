@@ -7,15 +7,17 @@
 
 import SwiftUI
 
-struct AddUpdateView: View {
+struct EditUpdateView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     
     @State private var headline: String = ""
     @State private var summary: String = ""
     @State private var hours: String = ""
+    @State private var showConfirmation = false
     var project : Project
     var update : ProjectUpdate
+    var isEditmode : Bool
     
     var body: some View {
         
@@ -26,7 +28,7 @@ struct AddUpdateView: View {
             
             VStack (alignment: .leading){
                 
-                Text("New update")
+                Text(isEditmode ? "Edit update" : "New update")
                     .font(.bigHeadline)
                     .foregroundColor(.white)
                 
@@ -44,17 +46,28 @@ struct AddUpdateView: View {
                         
                     
                     Button {
-                        //save the project update
                         update.headline = headline
                         update.summary = summary
                         update.hours = Double(hours)!
-                        project.updates.insert(update, at: 0)
                         
+                        if !isEditmode {
+                            //add project update
+                            project.updates.insert(update, at: 0)
+                        }
+
                         dismiss()
                         
                     } label: {
-                        Text ("Add")
+                        Text (isEditmode ? "Save" : "Add")
                     }.buttonStyle(.borderedProminent)
+                    
+                    if isEditmode {
+                        Button("Delete") {
+                            //Show confirmation dialog
+                            showConfirmation = true
+                        }.buttonStyle(.borderedProminent)
+                            .tint(.red)
+                    }
 
                 }
                 Spacer()
@@ -66,10 +79,16 @@ struct AddUpdateView: View {
             
             
         }
+        .confirmationDialog("Delete update?", isPresented: $showConfirmation) {
+            Button("Yes, delete") {
+                //Remove all updates from project with same id
+                project.updates.removeAll { u in u.id == update.id}
+                dismiss()
+            }
+            
+        }
         
     }
 }
 
-#Preview {
-    AddUpdateView(project: Project(), update: ProjectUpdate())
-}
+

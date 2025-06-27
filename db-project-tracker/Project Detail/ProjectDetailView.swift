@@ -134,7 +134,7 @@ struct ProjectDetailView: View {
             
         }.navigationBarBackButtonHidden(true)
             .sheet(item: $update) { update in
-                AddUpdateView(project: project, update: update)
+                EditUpdateView(project: project, update: update)
                     .presentationDetents([.fraction(0.3)])
             }
             .sheet(isPresented: $showEditFocus) {
