@@ -51,6 +51,7 @@ struct EditProjectView: View {
                     } label: {
                         Text (isEditmode ? "Save" : "Add")
                     }.buttonStyle(.borderedProminent)
+                        .disabled(projectName.trimmingCharacters(in: .whitespacesAndNewlines) == "")
 
                     if isEditmode {
                         //show delete Button
@@ -70,7 +71,7 @@ struct EditProjectView: View {
             
         }
         .confirmationDialog("Delete project?", isPresented: $showConfirmation, titleVisibility: .visible) {
-            Button("Delete") {
+            Button("Yes, delete") {
                 context.delete(project)
                 dismiss()
             }

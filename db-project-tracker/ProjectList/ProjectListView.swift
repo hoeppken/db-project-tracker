@@ -12,6 +12,7 @@ struct ProjectListView: View {
     
     @State private var newProject : Project?
     @Query private var projects : [Project]
+    @State private var selectedProject : Project?
     
     var body: some View {
         NavigationStack {
@@ -30,6 +31,15 @@ struct ProjectListView: View {
                             
                             ForEach(projects) { p in
                                 
+                                ProjectCardView(project: p)
+                                    .onTapGesture {
+                                        selectedProject = p
+                                    }
+                                    .onLongPressGesture {
+                                        newProject = p }
+                                    
+                                
+                                /*
                                 NavigationLink {
                                     ProjectDetailView(project: p)
                                 } label: {
@@ -38,7 +48,7 @@ struct ProjectListView: View {
                                             newProject = p
                                         }
                                 }.buttonStyle(PlainButtonStyle())
-
+                                 */
                             }
                             
                         }
@@ -66,6 +76,9 @@ struct ProjectListView: View {
                     }
                 }.padding(.horizontal, 20)
                 
+            }
+            .navigationDestination(item: $selectedProject ) { project in
+                ProjectDetailView(project: project)
             }
             
         }.sheet(item: $newProject) { project in
