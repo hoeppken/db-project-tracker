@@ -87,6 +87,11 @@ struct EditUpdateView: View {
             }
             
         }
+        .onAppear {
+            headline = update.headline
+            summary = update.summary
+            hours = String(Int(update.hours))
+        }
         
     }
 }
