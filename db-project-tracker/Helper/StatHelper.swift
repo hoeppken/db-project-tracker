@@ -24,7 +24,7 @@ struct StatHelper {
             // check if the latest 2 updates have the same date
             let date1 = sortedUpdates[0].date
             let date2 = sortedUpdates[1].date
-            if !Calendar.current.isDate(date1, equalTo: date2, toGranularity: .day) {
+            if !Calendar.current.isDate(date1, inSameDayAs: date2) {
                 //if not the same day , than that means latest update is first of today
                 project.sessions += 1
             }
@@ -34,11 +34,27 @@ struct StatHelper {
         }
         
     }
+    
+    //run this AFTER update has been removed from project updates array
     static func updateDeleted (project: Project, update : ProjectUpdate) {
-        
+        //change hours
+        project.hours -= update.hours
+        //change wins
+        if update.updateType == .milestone {
+            project.wins -= 1
+        }
+        //change sessions
+        let sameDayUpdates = project.updates.filter { u in
+            Calendar.current.isDate(u.date, inSameDayAs: update.date)
+        }
+        if sameDayUpdates.count == 0 {
+            //that means the deleted update was the only update of that day
+            project.sessions -= 1
+        }
     }
-    static func updateEdited (project: Project, hoursDifference : Int) {
-        
+    static func updateEdited (project: Project, hoursDifference : Double) {
+        //change hours
+        project.hours += hoursDifference
     }
     
 }

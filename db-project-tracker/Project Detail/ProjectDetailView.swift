@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ProjectDetailView: View {
+    @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     
     var project: Project
@@ -34,10 +36,10 @@ struct ProjectDetailView: View {
                     HStack (alignment: .center, spacing: 13){
                         
                         Spacer()
-                        StatbubbleView(title: "Hours", stat: "290", startColor: Color("Navy"), endColor: Color("Sky Blue"))
-                        StatbubbleView(title: "Sessions", stat: "34", startColor: Color("Turtle Green"), endColor: Color("Lime"))
-                        StatbubbleView(title: "Updates", stat: "32", startColor: Color("Maroon"), endColor: Color("Fuschia"))
-                        StatbubbleView(title: "Wins", stat: "9", startColor: Color("Maroon"), endColor: Color("Olive"))
+                        StatbubbleView(title: "Hours", stat: String(project.hours), startColor: Color("Navy"), endColor: Color("Sky Blue"))
+                        StatbubbleView(title: "Sessions", stat: String(project.sessions), startColor: Color("Turtle Green"), endColor: Color("Lime"))
+                        StatbubbleView(title: "Updates", stat: String(project.updates.count), startColor: Color("Maroon"), endColor: Color("Fuschia"))
+                        StatbubbleView(title: "Wins", stat: String(project.wins), startColor: Color("Maroon"), endColor: Color("Olive"))
                         Spacer()
                         
                     }
@@ -159,6 +161,12 @@ struct ProjectDetailView: View {
         update.headline = "Milestone achieved!"
         update.summary = project.focus
         project.updates.insert(update, at: 0)
+        
+        //force a swiftdata save
+        try? context.save()
+        
+        //update the stats
+        StatHelper.updateDeleted(project: project, update: update)
         
         //Clear the project focus
         project.focus = ""
