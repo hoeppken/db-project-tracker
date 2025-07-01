@@ -166,7 +166,7 @@ struct ProjectDetailView: View {
         try? context.save()
         
         //update the stats
-        StatHelper.updateDeleted(project: project, update: update)
+        StatHelper.updateAdded(project: project, update: update)
         
         //Clear the project focus
         project.focus = ""
