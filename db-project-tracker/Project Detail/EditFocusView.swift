@@ -41,6 +41,7 @@ struct EditFocusView: View {
                     } label: {
                         Text ("Add")
                     }.buttonStyle(.borderedProminent)
+                        .disabled(project.focus.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                     
                     
                     

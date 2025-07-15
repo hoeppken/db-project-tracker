@@ -34,6 +34,9 @@ struct EditProjectView: View {
                     
                     TextField("Project Name", text: $projectName)
                         .textFieldStyle(.roundedBorder)
+                        .onChange(of: projectName) { oldValue, newValue in
+                            projectName = TextHelper.limitChars(input: projectName, limit: 30)
+                        }
                     
                     Button {
 
@@ -51,7 +54,7 @@ struct EditProjectView: View {
                     } label: {
                         Text (isEditmode ? "Save" : "Add")
                     }.buttonStyle(.borderedProminent)
-                        .disabled(projectName.trimmingCharacters(in: .whitespacesAndNewlines) == "")
+                        .disabled(projectName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 
                     if isEditmode {
                         //show delete Button

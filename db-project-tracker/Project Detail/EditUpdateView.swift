@@ -43,7 +43,10 @@ struct EditUpdateView: View {
                     
                     TextField("Hours", text: $hours)
                         .keyboardType(.numberPad).frame(width: 60)
-                        
+                        .onChange(of: hours) { oldValue, newValue in
+                            let num = Int(TextHelper.limitChars(input: hours, limit: 2)) ?? 0
+                            hours = num > 24 ? "24" : String(num)
+                        }
                     
                     Button {
                         
@@ -74,6 +77,7 @@ struct EditUpdateView: View {
                     } label: {
                         Text (isEditmode ? "Save" : "Add")
                     }.buttonStyle(.borderedProminent)
+                        .disabled(shouldDisable())
                     
                     if isEditmode {
                         Button("Delete") {
@@ -112,6 +116,11 @@ struct EditUpdateView: View {
             hours = String(Int(update.hours))
         }
         
+    }
+    
+    private func shouldDisable() -> Bool {
+        // if Headline or summary or hours is empty, then disable saving it
+        return headline.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || summary.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || hours.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }
 
