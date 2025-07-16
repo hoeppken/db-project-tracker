@@ -77,28 +77,46 @@ struct ProjectDetailView: View {
                 
                 
                 //Project updates
-                ScrollView (showsIndicators: false){
-                    VStack (spacing: 27){
-                       
-                        ForEach (project.updates.sorted(by: { u1, u2 in
-                            u1.date > u2.date
-                        })) { update in
+                
+                if project.updates.count > 0 {
+                    
+                    ScrollView (showsIndicators: false){
+                        VStack (spacing: 27){
                             
-                            ProjectUpdateView(update: update)
-                                .onTapGesture {
-                                    //just to keep the scrollview working...
-                                }
-                                .onLongPressGesture {
-                                    newUpdate = update
-                                }
+                            ForEach (project.updates.sorted(by: { u1, u2 in
+                                u1.date > u2.date
+                            })) { update in
+                                
+                                ProjectUpdateView(update: update)
+                                    .onTapGesture {
+                                        //just to keep the scrollview working...
+                                    }
+                                    .onLongPressGesture {
+                                        newUpdate = update
+                                    }
+                                
+                            }
+                            
                             
                         }
-                        
+                        .padding()
+                        .padding(.bottom, 80)
                         
                     }
-                    .padding()
-                    .padding(.bottom, 80)
-                    
+                }else {
+                    //no updates
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button("Tap to add a new update") {
+                            newUpdate = ProjectUpdate()
+                        }
+                        .buttonStyle(.bordered)
+                        .foregroundStyle(.white)
+                        .padding(.bottom, 100)
+                        Spacer()
+                    }
+                    Spacer()
                 }
             }
             

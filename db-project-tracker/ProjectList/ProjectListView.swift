@@ -25,36 +25,51 @@ struct ProjectListView: View {
                         .font(.screenHeading)
                         .foregroundStyle(.white)
                     
-                    ScrollView(showsIndicators: false){
+                    if projects.count > 0 {
                         
-                        VStack (alignment: .center, spacing: 26){
+                        ScrollView(showsIndicators: false){
                             
-                            ForEach(projects) { p in
+                            VStack (alignment: .center, spacing: 26){
                                 
-                                ProjectCardView(project: p)
-                                    .onTapGesture {
-                                        selectedProject = p
-                                    }
-                                    .onLongPressGesture {
-                                        newProject = p }
+                                ForEach(projects) { p in
                                     
-                                
-                                /*
-                                NavigationLink {
-                                    ProjectDetailView(project: p)
-                                } label: {
                                     ProjectCardView(project: p)
-                                        .onLongPressGesture {
-                                            newProject = p
+                                        .onTapGesture {
+                                            selectedProject = p
                                         }
-                                }.buttonStyle(PlainButtonStyle())
-                                 */
+                                        .onLongPressGesture {
+                                            newProject = p }
+                                    
+                                    
+                                    /*
+                                     NavigationLink {
+                                     ProjectDetailView(project: p)
+                                     } label: {
+                                     ProjectCardView(project: p)
+                                     .onLongPressGesture {
+                                     newProject = p
+                                     }
+                                     }.buttonStyle(PlainButtonStyle())
+                                     */
+                                }
+                                
                             }
                             
                         }
-                        
+                    }else {
+                        //no projects
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            Button("Tap to add a new project") {
+                                newProject = Project()
+                            }
+                            .buttonStyle(.bordered)
+                            .foregroundStyle(.white)
+                            Spacer()
+                        }
+                        Spacer()
                     }
-                    
                     
                 }.padding(.horizontal, 20)
                 
