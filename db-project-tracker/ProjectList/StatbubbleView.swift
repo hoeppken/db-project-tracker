@@ -23,7 +23,9 @@ struct StatbubbleView: View {
                 
                 VStack {
                     Text (title).font(.captionText)
-                    Text (TextHelper.convertStat(input: stat)).font(.featuredNumber)
+                    Text (TextHelper.convertStat(input: stat))
+                        .contentTransition(.numericText())
+                        .font(.featuredNumber)
                 }.foregroundStyle(.white)
                 
             }.frame(width: 60, height: 40)

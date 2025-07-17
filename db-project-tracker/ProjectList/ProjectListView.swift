@@ -32,8 +32,9 @@ struct ProjectListView: View {
                             VStack (alignment: .center, spacing: 26){
                                 
                                 ForEach(projects) { p in
-                                    
+                                    //ProjectCard is what is beeing animated, that explains the insertion of the transition here
                                     ProjectCardView(project: p)
+                                        .transition(.scale)
                                         .onTapGesture {
                                             selectedProject = p
                                         }
